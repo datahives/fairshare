@@ -10,7 +10,9 @@ import Drawer from '@material-ui/core/Drawer'
 import List from '@material-ui/core/List'
 import Divider from '@material-ui/core/Divider'
 import ListItem from '@material-ui/core/ListItem'
-import ListItemText from '@material-ui/core/ListItemText';
+import ListItemText from '@material-ui/core/ListItemText'
+
+import TopTabs from './TopTabs'
 
 const styles = {
     root: {
@@ -97,6 +99,7 @@ class ButtonAppBar extends Component {
                             Fair Share
                         </Typography>
                     </Toolbar>
+                    <TopTabs value={this.props.page} handleTapChange={this.props.handleTapChange}/>
                 </AppBar>
 
                 <Drawer open={this.state.menuDrawerOpen} onClose={this.closeDrawer}>
