@@ -6,6 +6,7 @@ import ButtonAppBar from './AppBar'
 import MemberPage from './MemberPage'
 import MemberEdit from './MemberEdit'
 import ItemPage from './ItemPage'
+import ItemEdit from './ItemEdit'
 
 class App extends Component {
   constructor(props){
@@ -20,28 +21,18 @@ class App extends Component {
       ],
       items : [
         {
-          name: "Food 1",
-          price: 65,
-        },
-        {
-          name: "Food 2",
-          price: 45,
-        },
-        {
-          name: "Food 3",
-          price: 100,
-        }
-      ],
-      additions: [
-        {
           name: "Service charge",
-          value: 0.1
+          price: 0,
+          value: 0.1,
+          type: "addition",
         },
         {
           name: "VAT",
-          value: 0.07
+          price: 0,
+          value: 0.07,
+          type: "addition",
         }
-      ]
+      ],
     }
 
     this.handleTapChange = this.handleTapChange.bind(this)
@@ -49,6 +40,9 @@ class App extends Component {
     this.handleAddMember = this.handleAddMember.bind(this)
     this.handleEditMember = this.handleEditMember.bind(this)
     this.handleDeleteMember = this.handleDeleteMember.bind(this)
+    this.handleAddItem = this.handleAddItem.bind(this)
+    this.handleEditItem = this.handleEditItem.bind(this)
+    this.handleDeleteItem = this.handleDeleteItem.bind(this)
   }
 
   handleTapChange = (event, page)=>{
@@ -93,6 +87,35 @@ class App extends Component {
     })
   }
 
+  handleAddItem = (item)=>{
+    let items = this.state.items
+    items.push(item)
+    this.setState({
+      page: 1,
+      items: items
+    })
+  }
+
+  handleEditItem = (newitem, olditem)=>{
+    const idx = this.state.items.indexOf(olditem)
+    let items = this.state.items
+    items[idx] = newitem
+    this.setState({
+      page: 1,
+      items: items
+    })
+  }
+
+  handleDeleteItem = (olditem)=>{
+    const idx = this.state.items.indexOf(olditem)
+    let items = this.state.items
+    items.splice(idx,1)
+    this.setState({
+      page: 1,
+      items: items
+    })
+  }
+
   render() {
 
     let page
@@ -101,13 +124,16 @@ class App extends Component {
         page = <MemberPage members={this.state.members} handleDialogPage={this.handleDialogPage} handleDeleteMember={this.handleDeleteMember}/> 
         break
       case 1:
-        page = <ItemPage items={this.state.items} additions={this.state.additions}/>
+        page = <ItemPage items={this.state.items} handleDialogPage={this.handleDialogPage}  handleDeleteItem={this.handleDeleteItem}/>
         break
       case 2:
         page = <div>Summary page</div>
         break
       case 3:
         page = <MemberEdit target={this.state.target} handleAddMember={this.handleAddMember} handleEditMember={this.handleEditMember}/>
+        break
+      case 4:
+        page = <ItemEdit target={this.state.target} handleAddItem={this.handleAddItem} handleEditItem={this.handleEditItem}/>
         break
       default:
         page = <div>Default page</div>

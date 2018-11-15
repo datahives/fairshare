@@ -17,7 +17,7 @@ const styles = (theme) => ({
     },
     button: {
         margin: theme.spacing.unit,
-        position: 'absolute',
+        position: 'fixed',
         bottom: theme.spacing.unit * 2,
         right: theme.spacing.unit * 2,
     }
