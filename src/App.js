@@ -9,6 +9,7 @@ import MemberPage from './MemberPage'
 import MemberEdit from './MemberEdit'
 import ItemPage from './ItemPage'
 import ItemEdit from './ItemEdit'
+import SummaryPage from './SummaryPage'
 
 class App extends Component {
   constructor(props){
@@ -25,7 +26,7 @@ class App extends Component {
     ]
 
     this.state = {
-      page: 1,
+      page: 2,
       members: defaultmembers,
       items : [
         {
@@ -156,7 +157,7 @@ class App extends Component {
         page = <ItemPage items={this.state.items} members={this.state.members} handleDialogPage={this.handleDialogPage}  handleDeleteItem={this.handleDeleteItem}/>
         break
       case 2:
-        page = <div>Summary page</div>
+        page = <SummaryPage items={this.state.items} members={this.state.members}/>
         break
       case 3:
         page = <MemberEdit target={this.state.target} handleAddMember={this.handleAddMember} handleEditMember={this.handleEditMember}/>
