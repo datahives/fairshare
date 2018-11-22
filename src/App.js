@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
 import logo from './logo.svg'
+import Avatar from '@material-ui/core/Avatar'
+import deepPurple from '@material-ui/core/colors/deepPurple'
 import './App.css'
 
 import ButtonAppBar from './AppBar'
@@ -17,6 +19,10 @@ class App extends Component {
       members: [
         {
           name: "Me",
+          avatar: (
+            <Avatar
+              style={{ backgroundColor: deepPurple[500]}}
+            >M</Avatar>),
         },
       ],
       items : [

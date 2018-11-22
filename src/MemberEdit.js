@@ -5,6 +5,7 @@ import Paper from '@material-ui/core/Paper'
 import Typography from '@material-ui/core/Typography'
 import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
+import Avatar from '@material-ui/core/Avatar'
 
 const styles = (theme)=>({
     root: {
@@ -31,6 +32,13 @@ class MemberEdit extends Component {
         this.onApply = this.onApply.bind(this)
     }
 
+    getRandomColor() {
+        const red = Math.floor(Math.random() * 256)
+        const green = Math.floor(Math.random() * 256)
+        const blue = Math.floor(Math.random() * 256)
+        return "#" + red.toString(16) + green.toString(16) + blue.toString(16)
+    }
+
     onNameChange = (e)=>{
         this.setState({
             name: e.target.value
@@ -42,7 +50,12 @@ class MemberEdit extends Component {
         if(this.state.name!==""){
             if(!this.state.isExist){
                 const newMember = {
-                    name: this.state.name
+                    name: this.state.name,
+                    avatar: (
+                        <Avatar
+                            style={{ backgroundColor: this.getRandomColor() }}
+                        >{this.state.name.substring(0,1)}</Avatar>
+                    ),
                 }
                 this.props.handleAddMember(newMember)
             }else{

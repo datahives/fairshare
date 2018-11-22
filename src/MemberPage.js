@@ -9,6 +9,7 @@ import IconButton from '@material-ui/core/IconButton'
 import Button from '@material-ui/core/Button'
 import CloseIcon from '@material-ui/icons/Close'
 import PersonAddIcon from '@material-ui/icons/PersonAdd'
+import Avatar from '@material-ui/core/Avatar'
 
 const styles = (theme) => ({
     root: {
@@ -32,6 +33,7 @@ class MemberList extends Component {
                     {this.props.members.map((member)=>{
                         return (
                             <ListItem key={member.name} button onClick={()=>this.props.handleDialogPage(3, member)}>
+                                {member.avatar}
                                 <ListItemText primary={member.name}/>
                                 <ListItemSecondaryAction>
                                     <IconButton aria-label="Delete member" onClick={()=>this.props.handleDeleteMember(member)}>
