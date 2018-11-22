@@ -14,29 +14,33 @@ class App extends Component {
   constructor(props){
     super(props)
 
+    let defaultmembers = [
+      {
+        name: "Me",
+        avatar: (
+          <Avatar
+            style={{ backgroundColor: deepPurple[500] }}
+          >M</Avatar>),
+      },
+    ]
+
     this.state = {
       page: 1,
-      members: [
-        {
-          name: "Me",
-          avatar: (
-            <Avatar
-              style={{ backgroundColor: deepPurple[500]}}
-            >M</Avatar>),
-        },
-      ],
+      members: defaultmembers,
       items : [
         {
           name: "Service charge",
           price: 0,
           value: 0.1,
           type: "addition",
+          payby: [],
         },
         {
           name: "VAT",
           price: 0,
           value: 0.07,
           type: "addition",
+          payby: [],
         }
       ],
     }
@@ -77,9 +81,19 @@ class App extends Component {
     const idx = this.state.members.indexOf(oldmember)
     let members = this.state.members
     members[idx] = newmember
+
+    let items = this.state.items
+    for (let i = 0; i < items.length; i++) {
+      const memberidx = items[i].payby.indexOf(oldmember)
+      if (memberidx !== 1) {
+        items[i].payby.splice(memberidx, 1, newmember)
+      }
+    }
+    
     this.setState({
       page: 0,
-      members: members
+      members: members,
+      items: items
     })
   }
 
@@ -87,9 +101,18 @@ class App extends Component {
     const idx = this.state.members.indexOf(oldmember)
     let members = this.state.members
     members.splice(idx,1)
+
+    let items = this.state.items
+    for (let i = 0; i < items.length; i++) {
+      const memberidx = items[i].payby.indexOf(oldmember)
+      if (memberidx !== 1) {
+        items[i].payby.splice(memberidx, 1)
+      }
+    }
     this.setState({
       page: 0,
-      members: members
+      members: members,
+      items: items
     })
   }
 
@@ -98,7 +121,7 @@ class App extends Component {
     items.push(item)
     this.setState({
       page: 1,
-      items: items
+      items: items,
     })
   }
 
@@ -130,7 +153,7 @@ class App extends Component {
         page = <MemberPage members={this.state.members} handleDialogPage={this.handleDialogPage} handleDeleteMember={this.handleDeleteMember}/> 
         break
       case 1:
-        page = <ItemPage items={this.state.items} handleDialogPage={this.handleDialogPage}  handleDeleteItem={this.handleDeleteItem}/>
+        page = <ItemPage items={this.state.items} members={this.state.members} handleDialogPage={this.handleDialogPage}  handleDeleteItem={this.handleDeleteItem}/>
         break
       case 2:
         page = <div>Summary page</div>
@@ -139,7 +162,7 @@ class App extends Component {
         page = <MemberEdit target={this.state.target} handleAddMember={this.handleAddMember} handleEditMember={this.handleEditMember}/>
         break
       case 4:
-        page = <ItemEdit target={this.state.target} handleAddItem={this.handleAddItem} handleEditItem={this.handleEditItem}/>
+        page = <ItemEdit target={this.state.target} members={this.state.members} handleAddItem={this.handleAddItem} handleEditItem={this.handleEditItem}/>
         break
       default:
         page = <div>Default page</div>

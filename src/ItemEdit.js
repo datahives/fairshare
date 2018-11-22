@@ -8,6 +8,7 @@ import Button from '@material-ui/core/Button'
 import Select from '@material-ui/core/Select'
 import MenuItem from '@material-ui/core/MenuItem'
 import InputLabel from '@material-ui/core/InputLabel'
+import Chip from '@material-ui/core/Chip'
 
 const styles = (theme)=>({
     root: {
@@ -31,12 +32,14 @@ class ItemEdit extends Component {
             price: (!this.props.target)?"":this.props.target.price,
             value: (!this.props.target)?"":this.props.target.value,
             type: (!this.props.target)?"item":this.props.target.type,
+            payby: (!this.props.target) ? this.props.members.slice() : this.props.target.payby,
         }
 
         this.onNameChange = this.onNameChange.bind(this)
         this.onTypeChange = this.onTypeChange.bind(this)
         this.onPriceChange = this.onPriceChange.bind(this)
         this.onValueChange = this.onValueChange.bind(this)
+        this.onPaybyChange = this.onPaybyChange.bind(this)
         this.onApply = this.onApply.bind(this)
     }
 
@@ -68,6 +71,15 @@ class ItemEdit extends Component {
         }
     }
 
+    onPaybyChange = (event)=>{
+        let payby = event.target.value
+        if (!Array.isArray(payby)){
+            payby = [payby]
+        }
+        console.log(payby)
+        this.setState({ payby: payby})
+    }
+
     onApply = (e)=>{
         e.preventDefault()
         if(this.state.name!==""){
@@ -76,7 +88,8 @@ class ItemEdit extends Component {
                     name: this.state.name,
                     type: this.state.type,
                     price: this.state.price,
-                    value: this.state.value
+                    value: this.state.value,
+                    payby: this.state.payby,
                 }
                 this.props.handleAddItem(newItem)
             }else{
@@ -85,6 +98,7 @@ class ItemEdit extends Component {
                 newItem.type = this.state.type
                 newItem.price = this.state.price
                 newItem.value = this.state.value
+                newItem.payby = this.state.payby
                 this.props.handleEditItem(newItem, this.props.target)
             }
             
@@ -92,6 +106,18 @@ class ItemEdit extends Component {
     }
 
     render(){
+
+        const memberList = this.props.members.map(member=>{
+            return(
+                <MenuItem key={member.name} value={member}>
+                    {member.avatar}
+                    {member.name}
+                </MenuItem>
+            )
+        })
+
+        console.log(this.state.payby)
+
         return(
             <div>
                 <Paper className={this.props.classes.root} elevation={1}>
@@ -138,6 +164,27 @@ class ItemEdit extends Component {
                         onChange={this.onValueChange}
                         />
                     )}
+                    <InputLabel>Pay by</InputLabel>
+                    <Select
+                        multiple
+                        fullWidth
+                        onChange={this.onPaybyChange}
+                        value={this.state.payby}
+                        renderValue={selected => {
+                            return(
+                                <div>
+                                    {selected.map(member => {
+                                        return <Chip
+                                            avatar={member.avatar}
+                                            label={member.name}
+                                        />
+                                    })  }
+                                </div>
+                            )           
+                        }}
+                    >
+                        {memberList}
+                    </Select>
 
                     <Button variant="contained" color="primary" className={this.props.classes.button}
                         onClick={this.onApply}
