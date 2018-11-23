@@ -22,6 +22,8 @@ class App extends Component {
           <Avatar
             style={{ backgroundColor: deepPurple[500] }}
           >M</Avatar>),
+        paidAmount: 0,
+        changeAmount: 0,
       },
     ]
 
@@ -51,6 +53,8 @@ class App extends Component {
     this.handleAddMember = this.handleAddMember.bind(this)
     this.handleEditMember = this.handleEditMember.bind(this)
     this.handleDeleteMember = this.handleDeleteMember.bind(this)
+    this.handlePayMember = this.handlePayMember.bind(this)
+    this.handleChangeMember = this.handleChangeMember.bind(this)
     this.handleAddItem = this.handleAddItem.bind(this)
     this.handleEditItem = this.handleEditItem.bind(this)
     this.handleDeleteItem = this.handleDeleteItem.bind(this)
@@ -117,6 +121,24 @@ class App extends Component {
     })
   }
 
+  handlePayMember = (member, amount)=>{
+    const idx = this.state.members.indexOf(member)
+    let members = this.state.members
+    members[idx].paidAmount += parseInt(amount)
+    this.setState({
+      members: members
+    })
+  }
+
+  handleChangeMember = (member, amount)=>{
+    const idx = this.state.members.indexOf(member)
+    let members = this.state.members
+    members[idx].changeAmount += parseInt(amount)
+    this.setState({
+      members: members
+    })
+  }
+
   handleAddItem = (item)=>{
     let items = this.state.items
     items.push(item)
@@ -157,7 +179,12 @@ class App extends Component {
         page = <ItemPage items={this.state.items} members={this.state.members} handleDialogPage={this.handleDialogPage}  handleDeleteItem={this.handleDeleteItem}/>
         break
       case 2:
-        page = <SummaryPage items={this.state.items} members={this.state.members}/>
+        page = <SummaryPage 
+          items={this.state.items} 
+          members={this.state.members}
+          handlePayMember={this.handlePayMember}
+          handleChangeMember={this.handleChangeMember}
+          />
         break
       case 3:
         page = <MemberEdit target={this.state.target} handleAddMember={this.handleAddMember} handleEditMember={this.handleEditMember}/>

@@ -56,6 +56,8 @@ class MemberEdit extends Component {
                             style={{ backgroundColor: this.getRandomColor() }}
                         >{this.state.name.substring(0,1)}</Avatar>
                     ),
+                    paidAmount: 0,
+                    changeAmount: 0,
                 }
                 this.props.handleAddMember(newMember)
             }else{
