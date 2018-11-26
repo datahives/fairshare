@@ -1,13 +1,21 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import {Grommet} from 'grommet';
+
+const theme = {
+  global: {
+    font: {
+      family: 'Open Sans',
+      size: '16px',
+      height: '14px',
+    },
+  },
+};
 
 class App extends Component {
   render() {
     return (
-      <div className="App">
+      <Grommet theme={theme}>
         <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
           <p>
             Edit <code>src/App.js</code> and save to reload.
           </p>
@@ -20,7 +28,7 @@ class App extends Component {
             Learn React
           </a>
         </header>
-      </div>
+      </Grommet>
     );
   }
 }
