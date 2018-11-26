@@ -4,6 +4,7 @@
     position: absolute;
     top: 0;
     left: 0;
+    background-color: #3FA57A;
 }
 
 .MenuCard{
@@ -12,4 +13,12 @@
     height: 300px;
     margin: 20px;
     background-size: cover;
+}
+
+.Card{
+    width: 90%;
+    max-width: 450px;
+    height: 150px;
+    margin: 20px;
+    background-color: white;
 }

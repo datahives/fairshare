@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import {
     Box,
-    Button,
-    Heading
 } from 'grommet';
 import './App.css';
 
@@ -33,8 +31,8 @@ class MainPage extends Component {
             <Box fill>
                 <AppBar/>
                 <Box
+                    fill
                     align="center"
-                    background="brand"
                     direction="column"
                     justify="start"
                 >

@@ -4,6 +4,7 @@ import './App.css';
 
 import SplashPage from './SplashPage';
 import MainPage from './MainPage';
+import MemberPage from './MemberPage';
 
 const theme = {
   global: {
@@ -21,7 +22,7 @@ const theme = {
 
 class App extends Component {
   state = {
-    currentPage: 1,
+    currentPage: 2,
   };
 
   render() {
@@ -34,7 +35,7 @@ class App extends Component {
         renderedPage = <MainPage/>;
         break;
       case 2:
-        renderedPage = <div>Items</div>;
+        renderedPage = <MemberPage/>;
         break;
       case 3:
         renderedPage = <div>Summary</div>;
