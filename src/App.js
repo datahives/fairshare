@@ -3,6 +3,7 @@ import {Grommet} from 'grommet';
 import './App.css';
 
 import SplashPage from './SplashPage';
+import MainPage from './MainPage';
 
 const theme = {
   global: {
@@ -30,7 +31,7 @@ class App extends Component {
         renderedPage = <SplashPage/>;
         break;
       case 1:
-        renderedPage = <div>Members</div>;
+        renderedPage = <MainPage/>;
         break;
       case 2:
         renderedPage = <div>Items</div>;

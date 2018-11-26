@@ -5,3 +5,11 @@
     top: 0;
     left: 0;
 }
+
+.MenuCard{
+    width: 90%;
+    max-width: 450px;
+    height: 300px;
+    margin: 20px;
+    background-size: cover;
+}
