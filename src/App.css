@@ -1,0 +1,33 @@
+.fullview {
+    background-color: #3FA57A;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.centerVertical{
+    display: flex;
+    height: 100%;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.centerHorizontal{
+    display: flex;
+    width: 100%;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.splashTitle{
+    text-align: center;
+    color: white;
+    font-size: 1.4em;
+    margin: 20px;
+}
+
+.bgPrimary{
+    background-color: #3D138D;
+}
