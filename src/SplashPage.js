@@ -1,12 +1,15 @@
 import React, { Component } from 'react';
-import './App.css';
-import '@blueprintjs/core/lib/css/blueprint.css';
 import { Button, Intent } from '@blueprintjs/core';
+import '@blueprintjs/core/lib/css/blueprint.css';
+import './App.css';
+
+import AppBar from './AppBar';
 
 class SplashPage extends Component {
     render(){
         return(
             <div className="fullview">
+                <AppBar/>
                 <div className="centerVertical">
                     <div className="centerHorizontal">
                         <div className="splashTitle">
