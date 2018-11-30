@@ -37,7 +37,7 @@
 
 .AppBar h1 {
     font-size: 1.3em;
-    font-weight: 400;
+    font-weight: 40;
 }
 
 .splashTitle{
@@ -47,6 +47,22 @@
     margin: 20px;
 }
 
-.bgPrimary{
-    background-color: #3D138D;
+.bottomBar {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+}
+
+.bottomNextButton {
+    width: 45%;
+    margin: 5px;
+}
+
+.bottomBackButton {
+    width: 25%;
+    margin: 5px;
 }

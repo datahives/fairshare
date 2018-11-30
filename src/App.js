@@ -3,10 +3,11 @@ import './App.css';
 // import { Button } from '@blueprintjs/core';
 
 import SplashPage from './SplashPage';
+import MemberPage from './MemberPage';
 
 class App extends Component {
   state = {
-    page: 0
+    page: 1
   }
 
   render() {
@@ -16,7 +17,7 @@ class App extends Component {
         renderedPage = <SplashPage/>;
         break;
       case 1:
-        renderedPage = <div>Member</div>;
+        renderedPage = <MemberPage/>;
         break;
       case 2:
         renderedPage = <div>Items</div>;
