@@ -32,7 +32,7 @@ class MemberPage extends Component {
                     <MemberCard/>
                     <MemberCard/>
                 </div>
-                <BottomBar/>
+                <BottomBar handleBackPage={this.props.handleBackPage} handleNextPage={this.props.handleNextPage}/>
             </div>
         );
     }

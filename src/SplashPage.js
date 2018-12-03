@@ -18,7 +18,7 @@ class SplashPage extends Component {
                         </div>
                     </div>
                     <div className="centerHorizontal">
-                        <Button large intent={Intent.PRIMARY} onClick={()=>{}}>
+                        <Button large intent={Intent.PRIMARY} onClick={this.props.handleNextPage}>
                             Let's pay!
                         </Button>
                     </div>

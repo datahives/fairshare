@@ -8,27 +8,47 @@ import ItemPage from './ItemPage';
 import SummaryPage from './SummaryPage';
 
 class App extends Component {
-  state = {
-    page: 3
+
+  constructor(props){
+    super(props);
+
+    this.state = {
+      page: 0
+    };
+
+    this.nextPage = this.nextPage.bind(this);
+    this.previousPage = this.previousPage.bind(this);
+  }
+
+  nextPage(){
+    this.setState({
+      page: this.state.page + 1
+    });
+  }
+
+  previousPage(){
+    this.setState({
+      page: this.state.page - 1
+    });
   }
 
   render() {
     let renderedPage;
     switch(this.state.page){
       case 0:
-        renderedPage = <SplashPage/>;
+        renderedPage = <SplashPage handleNextPage={this.nextPage}/>;
         break;
       case 1:
-        renderedPage = <MemberPage/>;
+        renderedPage = <MemberPage handleBackPage={this.previousPage} handleNextPage={this.nextPage}/>;
         break;
       case 2:
-        renderedPage = <ItemPage/>;
+        renderedPage = <ItemPage handleBackPage={this.previousPage} handleNextPage={this.nextPage}/>;
         break;
       case 3:
-        renderedPage = <SummaryPage/>;
+        renderedPage = <SummaryPage handleBackPage={this.previousPage} handleNextPage={this.nextPage}/>;
         break;
       default:
-        renderedPage = <div>404</div>;
+        renderedPage = <div><strong>Four-oh-Four | 404</strong></div>;
     }
 
     return (

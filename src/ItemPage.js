@@ -46,7 +46,7 @@ class ItemPage extends Component {
                     <ItemCard/>
                     <ItemCard/>
                 </div>
-                <BottomBar/>
+                <BottomBar handleBackPage={this.props.handleBackPage} handleNextPage={this.props.handleNextPage}/>
             </div>
         );
     }

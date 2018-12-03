@@ -58,7 +58,7 @@ class SummaryPage extends Component {
                     <MemberSummaryCard/>
                     <MemberSummaryCard/>
                 </div>
-                <BottomBar/>
+                <BottomBar handleBackPage={this.props.handleBackPage}/>
             </div>
         );
     }
