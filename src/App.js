@@ -5,10 +5,11 @@ import './App.css';
 import SplashPage from './SplashPage';
 import MemberPage from './MemberPage';
 import ItemPage from './ItemPage';
+import SummaryPage from './SummaryPage';
 
 class App extends Component {
   state = {
-    page: 2
+    page: 3
   }
 
   render() {
@@ -24,7 +25,7 @@ class App extends Component {
         renderedPage = <ItemPage/>;
         break;
       case 3:
-        renderedPage = <div>Summary</div>;
+        renderedPage = <SummaryPage/>;
         break;
       default:
         renderedPage = <div>404</div>;
