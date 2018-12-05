@@ -64,7 +64,7 @@ class AddMemberCard extends Component {
                     member={null} 
                     showdialog={this.state.showdialog}
                     handleClose={this.handleClose}
-                    handleAddMember={this.props.handleAddMember}/>
+                    {...this.props}/>
             </Card>
         );
     }
@@ -95,11 +95,9 @@ class EditMemberButton extends Component {
             <div>
                 <Button icon="edit" onClick={this.handleOpen}>Edit</Button>
                 <EditMemberDialog 
-                    member={this.props.member} 
                     showdialog={this.state.showdialog}
                     handleClose={this.handleClose}
-                    handleEditMember={this.props.handleEditMember}
-                    handleDeleteMember={this.props.handleDeleteMember}/>
+                    {...this.props}/>
             </div>
         );
     }
@@ -177,8 +175,7 @@ class MemberPage extends Component {
             return (
                 <MemberCard key={member.id} 
                     member={member}
-                    handleEditMember={this.props.handleEditMember}
-                    handleDeleteMember={this.props.handleDeleteMember}/>
+                    {...this.props}/>
             );
         });
         return(
@@ -186,9 +183,9 @@ class MemberPage extends Component {
                 <AppBar/>
                 <div className="contentpane">
                     {MemberList}
-                    <AddMemberCard handleAddMember={this.props.handleAddMember}/>
+                    <AddMemberCard {...this.props}/>
                 </div>
-                <BottomBar handleBackPage={this.props.handleBackPage} handleNextPage={this.props.handleNextPage}/>
+                <BottomBar {...this.props}/>
             </div>
         );
     }
