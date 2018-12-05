@@ -18,12 +18,13 @@ import AppBar from './AppBar';
 import BottomBar from './BottomBar';
 import Avatar from './Avatar';
 
+const sha256 = require('js-sha256');
+
 class AvatarList extends Component{
     render(){
         return(
             <div className="flexLeftHorizontal" style={{width: "100%"}}>
-                <Avatar label="MN" bgcolor="blue" color="white"/>
-                <Avatar label="MN" bgcolor="blue" color="white"/>
+                {this.props.avatars}
             </div>
         );
     }
@@ -31,14 +32,22 @@ class AvatarList extends Component{
 
 class ItemCard extends Component {
     render(){
+        const avatarlist = this.props.members.map(member=>{
+            if (this.props.item.paidby.indexOf(member.id)!==-1){
+                return member.avatar;
+            }
+        });
+
         return(
           <Card className="card" interactive={true} elevation={Elevation.TWO}>
-            <H3>Item name</H3>
-            <H5>Food</H5>
+            <H3>{this.props.item.name}</H3>
+            <H5>{(this.props.item.type==="surcharge")?"Surcharge":"Item"}</H5>
 
-            <p>100 THB</p>
+            <p>{this.props.item.value} {(this.props.item.type==="surcharge")?"% = ":"THB"}
+               {(this.props.item.type==="surcharge")?this.props.totalItemValue * this.props.item.value / 100: null}
+            </p>
 
-            <AvatarList/>
+            <AvatarList avatars={avatarlist}/>
 
             <div className="flexRightHorizontal">
                 <Button icon="edit">Edit</Button>
@@ -97,6 +106,25 @@ class NewItemCard extends Component {
             paidby: list,
         });
     }
+    
+    onConfirm = ()=>{
+        const newItem = {
+            id: sha256((new Date()).getTime().toString()),
+            name: this.state.name,
+            type: this.state.type,
+            value: this.state.value,
+            paidby: this.state.paidby,
+        };
+
+        this.props.handleAddItem(newItem);
+        this.setState({
+            showdialog: false,
+            name: '',
+            type: 'item',
+            value: 0,
+            paidby: [],
+        });
+    }
 
     render(){
         return(
@@ -130,7 +158,7 @@ class NewItemCard extends Component {
                             </div>
                             <div className="flexRightHorizontal">
                                 <Button intent={Intent.DANGER} fill onClick={this.handleClose}>Cancel</Button>
-                                <Button intent={Intent.PRIMARY} fill onClick={()=>{}}>Add</Button>
+                                <Button intent={Intent.PRIMARY} fill onClick={this.onConfirm}>Add</Button>
                             </div>
                         </div>
                     </Card>
@@ -193,7 +221,6 @@ class MemberSelect extends Component {
             );
         });
 
-        console.log(this.props.paidby)
         return(
             <div>
                 <Button fill onClick={this.handleOpen}>{this.props.paidby.length} {(this.props.paidby.length>1)?"participants":"participant"}</Button>
@@ -217,13 +244,28 @@ class MemberSelect extends Component {
 
 class ItemPage extends Component {
     render(){
+        let totalItemValue = 0;
+        this.props.items.forEach(item=>{
+            if(item.type==="item"){
+                totalItemValue = totalItemValue+item.value;
+            }
+        })
+
+        const itemList = this.props.items.map(item=>{
+            return(
+                <ItemCard key={item.id} 
+                    members={this.props.members}
+                    item={item} 
+                    totalItemValue={totalItemValue}/>
+            );
+        })
+
         return(
             <div className="fullview">
                 <AppBar/>
                 <div className="contentpane">
-                    <ItemCard/>
-                    <ItemCard/>
-                    <NewItemCard members={this.props.members}/>
+                    {itemList}
+                    <NewItemCard members={this.props.members} handleAddItem={this.props.handleAddItem}/>
                 </div>
                 <BottomBar handleBackPage={this.props.handleBackPage} handleNextPage={this.props.handleNextPage}/>
             </div>

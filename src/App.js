@@ -24,7 +24,8 @@ class App extends Component {
 
     this.state = {
       page: 1,
-      members: []
+      members: [],
+      items: [],
     };
 
     this.nextPage = this.nextPage.bind(this);
@@ -57,6 +58,15 @@ class App extends Component {
     });
   }
 
+  addItem = (item)=>{
+    console.log(item)
+    let items = this.state.items;
+    items.push(item);
+    this.setState({
+      items: items,
+    });
+  }
+
   render() {
     let renderedPage;
     switch(this.state.page){
@@ -73,8 +83,10 @@ class App extends Component {
       case 2:
         renderedPage = <ItemPage 
           members={this.state.members}
+          items={this.state.items}
           handleBackPage={this.previousPage} 
-          handleNextPage={this.nextPage}/>;
+          handleNextPage={this.nextPage}
+          handleAddItem={this.addItem}/>;
         break;
       case 3:
         renderedPage = <SummaryPage handleBackPage={this.previousPage} handleNextPage={this.nextPage}/>;
