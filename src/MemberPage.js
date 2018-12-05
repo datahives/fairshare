@@ -32,14 +32,11 @@ class MemberCard extends Component {
     }
 }
 
-class NewMemberCard extends Component {
-
+class AddMemberCard extends Component {
     constructor(props){
         super(props);
-
         this.state = {
             showdialog: false,
-            name: '',
         };
     }
 
@@ -53,6 +50,34 @@ class NewMemberCard extends Component {
         this.setState({
             showdialog: false,
         });
+    }
+
+    render(){
+        return(
+            <Card className="card" interactive={true} elevation={Elevation.TWO}>
+                <div className="centerVertical" onClick={this.handleOpen}>
+                    <div className="centerHorizontal">
+                        <Icon icon="plus" iconSize={30}/>
+                    </div>
+                </div>
+                <EditMemberDialog 
+                    member={null} 
+                    showdialog={this.state.showdialog}
+                    handleClose={this.handleClose}
+                    handleAddMember={this.props.handleAddMember}/>
+            </Card>
+        );
+    }
+}
+
+class EditMemberDialog extends Component {
+
+    constructor(props){
+        super(props);
+
+        this.state = {
+            name: '',
+        };
     }
 
     onChange = (event)=>{
@@ -70,38 +95,31 @@ class NewMemberCard extends Component {
 
         this.props.handleAddMember(newMember);
         this.setState({
-            showdialog: false,
             name: '',
         });
+        this.props.handleClose();
     }
 
     render(){
         return(
-            <Card className="card" interactive={true} elevation={Elevation.TWO}>
-                <div className="centerVertical" onClick={this.handleOpen}>
-                    <div className="centerHorizontal">
-                        <Icon icon="plus" iconSize={30}/>
-                    </div>
-                </div>
-                <Overlay isOpen={this.state.showdialog}>
-                    <Card className="dialog" elevation={Elevation.THREE}>
-                        <div className="flexSpanVertical" style={{height: "100%"}}>
-                            <div>
-                                <H3>Add Participant</H3>
-                                <Label>
-                                    Name
-                                    <input className="bp3-input bp3-fill" type="text" placeholder="Name" onChange={this.onChange}/>
-                                </Label>
-                            </div>
-                            <div className="flexRightHorizontal">
-                                <Button intent={Intent.DANGER} fill onClick={this.handleClose}>Cancel</Button>
-                                <Button intent={Intent.PRIMARY} fill onClick={this.onConfirm}>Add</Button>
-                            </div>
+            <Overlay isOpen={this.props.showdialog}>
+                <Card className="dialog" elevation={Elevation.THREE}>
+                    <div className="flexSpanVertical" style={{height: "100%"}}>
+                        <div>
+                            <H3>Add Participant</H3>
+                            <Label>
+                                Name
+                                <input className="bp3-input bp3-fill" type="text" placeholder="Name" onChange={this.onChange}/>
+                            </Label>
                         </div>
-                        
-                    </Card>
-                </Overlay>
-            </Card>
+                        <div className="flexRightHorizontal">
+                            <Button intent={Intent.DANGER} fill onClick={this.props.handleClose}>Cancel</Button>
+                            <Button intent={Intent.PRIMARY} fill onClick={this.onConfirm}>Add</Button>
+                        </div>
+                    </div>
+                    
+                </Card>
+            </Overlay>
         );
     }
 }
@@ -118,7 +136,7 @@ class MemberPage extends Component {
                 <AppBar/>
                 <div className="contentpane">
                     {MemberList}
-                    <NewMemberCard handleAddMember={this.props.handleAddMember}/>
+                    <AddMemberCard handleAddMember={this.props.handleAddMember}/>
                 </div>
                 <BottomBar handleBackPage={this.props.handleBackPage} handleNextPage={this.props.handleNextPage}/>
             </div>
