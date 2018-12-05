@@ -49,24 +49,19 @@ class ItemCard extends Component {
             <AvatarList avatars={avatarlist}/>
 
             <div className="flexRightHorizontal">
-                <Button icon="edit">Edit</Button>
+                <EditItemButton {...this.props}/>
             </div>
           </Card>  
         );
     }
 }
 
-class NewItemCard extends Component {
+class AddItemCard extends Component {
     constructor(props){
         super(props);
-
         this.state = {
             showdialog: false,
-            name: '',
-            type: 'item',
-            value: 0,
-            paidby: [],
-        };     
+        };
     }
 
     handleOpen = ()=>{
@@ -79,6 +74,73 @@ class NewItemCard extends Component {
         this.setState({
             showdialog: false,
         });
+    }
+
+    render(){
+        return(
+            <Card className="card" interactive={true} elevation={Elevation.TWO}>
+                <div className="centerVertical" onClick={this.handleOpen}>
+                    <div className="centerHorizontal">
+                        <Icon icon="plus" iconSize={30}/>
+                    </div>
+                </div>
+                <EditItemDialog
+                    item={null}
+                    showdialog={this.state.showdialog}
+                    handleClose={this.handleClose}
+                    {...this.props}/>
+            </Card>
+        );
+    }
+}
+
+class EditItemButton extends Component {
+    constructor(props){
+        super(props);
+        this.state = {
+            showdialog: false,
+        };
+    }
+
+    handleOpen = ()=>{
+        this.setState({
+            showdialog: true,
+        });
+    }
+
+    handleClose = ()=>{
+        this.setState({
+            showdialog: false,
+        });
+    }
+
+    render(){
+        return(
+            <div>
+                <Button icon="edit" onClick={this.handleOpen}>Edit</Button>
+                <EditItemDialog
+                    showdialog={this.state.showdialog}
+                    handleClose={this.handleClose}
+                    {...this.props}/>
+            </div>
+        );
+    }
+}
+
+class EditItemDialog extends Component {
+    constructor(props){
+        super(props);
+
+        const name = (this.props.item)?this.props.item.name:'';
+        const type = (this.props.item)?this.props.item.type:'item';
+        const value = (this.props.item)?this.props.item.value:0;
+        const paidby = (this.props.item)?this.props.item.paidby:[];
+        this.state = {
+            name: name,
+            type: type,
+            value: value,
+            paidby: paidby,
+        };     
     }
 
     onNameChange = (event)=>{
@@ -115,54 +177,60 @@ class NewItemCard extends Component {
             paidby: this.state.paidby,
         };
 
-        this.props.handleAddItem(newItem);
-        this.setState({
-            showdialog: false,
-            name: '',
-            type: 'item',
-            value: 0,
-            paidby: [],
-        });
+        if(this.props.item){
+            newItem.id = this.props.item.id;
+            this.props.handleEditItem(this.props.item, newItem);
+        }else{
+            this.props.handleAddItem(newItem);
+        }
+        
+        if(!this.props.item){
+            this.setState({
+                name: '',
+                type: 'item',
+                value: 0,
+                paidby: [],
+            });
+        }
+        this.props.handleClose();
+    }
+
+    onDelete = ()=>{
+        this.props.handleDeleteItem(this.props.item);
     }
 
     render(){
         return(
-            <Card className="card" interactive={true} elevation={Elevation.TWO}>
-                <div className="centerVertical" onClick={this.handleOpen}>
-                    <div className="centerHorizontal">
-                        <Icon icon="plus" iconSize={30}/>
-                    </div>
-                </div>
-                <Overlay isOpen={this.state.showdialog}>
-                    <Card className="dialog" elevation={Elevation.THREE}>
-                        <div className="flexSpanVertical" style={{height: "100%"}}>
-                            <div>
-                                <H3>Add Item</H3>
-                                <Label>
-                                    Item name
-                                    <input className="bp3-input bp3-fill" type="text" placeholder="Item name" onChange={this.onNameChange}/>
-                                </Label>
-                                <Label>
-                                    Type
-                                    <HTMLSelect options={["Item","Surcharge"]} onChange={this.onTypeChange}/>
-                                </Label>
-                                <Label>
-                                    {(this.state.type==="item")?"Price":"Add-on percentage"}
-                                    <NumericInput fill min={0} value={this.state.value} onValueChange={this.onPriceChange}/>
-                                </Label>
-                                <Label>
-                                    Paid by
-                                    <MemberSelect members={this.props.members} paidby={this.state.paidby} onPaidByChange={this.onPaidByChange}/>
-                                </Label>
-                            </div>
-                            <div className="flexRightHorizontal">
-                                <Button intent={Intent.DANGER} fill onClick={this.handleClose}>Cancel</Button>
-                                <Button intent={Intent.PRIMARY} fill onClick={this.onConfirm}>Add</Button>
-                            </div>
+            <Overlay isOpen={this.props.showdialog}>
+                <Card className="dialog" elevation={Elevation.THREE}>
+                    <div className="flexSpanVertical" style={{height: "100%"}}>
+                        <div>
+                            <H3>{(this.props.item)?"Edit":"Add"} Item</H3>
+                            <Label>
+                                Item name
+                                <input className="bp3-input bp3-fill" type="text" placeholder="Item name" value={this.state.name} onChange={this.onNameChange}/>
+                            </Label>
+                            <Label>
+                                Type
+                                <HTMLSelect options={["Item","Surcharge"]} value={(this.state.type==="surcharge")?"Surcharge":"Item"} onChange={this.onTypeChange}/>
+                            </Label>
+                            <Label>
+                                {(this.state.type==="item")?"Price":"Add-on percentage"}
+                                <NumericInput fill min={0} value={this.state.value} value={this.state.value} onValueChange={this.onPriceChange}/>
+                            </Label>
+                            <Label>
+                                Paid by
+                                <MemberSelect members={this.props.members} paidby={this.state.paidby} onPaidByChange={this.onPaidByChange}/>
+                            </Label>
                         </div>
-                    </Card>
-                </Overlay>
-            </Card>
+                        <div className="flexRightHorizontal">
+                            <Button intent={Intent.NONE} fill onClick={this.props.handleClose}>Cancel</Button>
+                            {(this.props.item)?<Button intent={Intent.DANGER} fill onClick={this.onDelete}>Delete</Button>:null}
+                            <Button intent={Intent.PRIMARY} fill onClick={this.onConfirm}>Add</Button>
+                        </div>
+                    </div>
+                </Card>
+            </Overlay>
         );
     }
 }
@@ -253,9 +321,9 @@ class ItemPage extends Component {
         const itemList = this.props.items.map(item=>{
             return(
                 <ItemCard key={item.id} 
-                    members={this.props.members}
-                    item={item} 
-                    totalItemValue={totalItemValue}/>
+                    item={item}
+                    totalItemValue={totalItemValue}
+                    {...this.props}/>
             );
         })
 
@@ -264,9 +332,9 @@ class ItemPage extends Component {
                 <AppBar/>
                 <div className="contentpane">
                     {itemList}
-                    <NewItemCard members={this.props.members} handleAddItem={this.props.handleAddItem}/>
+                    <AddItemCard {...this.props}/>
                 </div>
-                <BottomBar handleBackPage={this.props.handleBackPage} handleNextPage={this.props.handleNextPage}/>
+                <BottomBar {...this.props}/>
             </div>
         );
     }

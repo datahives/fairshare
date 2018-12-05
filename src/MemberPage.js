@@ -25,7 +25,7 @@ class MemberCard extends Component {
                 <H3 style={{marginLeft: "20px", lineHeight: "45px"}}>{this.props.member.name}</H3>
             </div>
             <div className="flexRightHorizontal">
-                <EditMemberButton member={this.props.member} handleEditMember={this.props.handleEditMember} handleDeleteMember={this.props.handleDeleteMember}/>
+                <EditMemberButton {...this.props}/>
             </div>
           </Card>  
         );
@@ -130,13 +130,17 @@ class EditMemberDialog extends Component {
 
         if(this.props.member){
             newMember.id = this.props.member.id;
-            this.props.handleEditMember(this.props.member,newMember)
+            this.props.handleEditMember(this.props.member,newMember);
         }else{
             this.props.handleAddMember(newMember);
         }
-        this.setState({
-            name: '',
-        });
+        
+        if(!this.props.member){
+            this.setState({
+                name: '',
+            });
+        }
+        
         this.props.handleClose();
     }
 

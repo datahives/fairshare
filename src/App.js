@@ -69,6 +69,24 @@ class App extends Component {
     });
   }
 
+  editItem = (olditem, newitem)=>{
+    let items = this.state.items;
+    const idx = items.indexOf(olditem);
+    items.splice(idx,1,newitem);
+    this.setState({
+      items: items,
+    });
+  }
+
+  deleteItem = (item)=>{
+    let items = this.state.items;
+    const idx = items.indexOf(item);
+    items.splice(idx,1);
+    this.setState({
+      items: items,
+    });
+  }
+
   render() {
     let renderedPage;
     switch(this.state.page){
@@ -90,7 +108,9 @@ class App extends Component {
           items={this.state.items}
           handleBackPage={this.previousPage} 
           handleNextPage={this.nextPage}
-          handleAddItem={this.addItem}/>;
+          handleAddItem={this.addItem}
+          handleEditItem={this.editItem}
+          handleDeleteItem={this.deleteItem}/>;
         break;
       case 3:
         renderedPage = <SummaryPage handleBackPage={this.previousPage} handleNextPage={this.nextPage}/>;
