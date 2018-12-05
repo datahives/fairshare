@@ -5,7 +5,6 @@ import './App.css';
 
 import AppBar from './AppBar';
 import BottomBar from './BottomBar';
-import Avatar from './Avatar';
 
 class MemberCard extends Component {
     render(){
@@ -32,25 +31,21 @@ class NewMemberCard extends Component {
             showdialog: false,
             name: '',
         };
-
-        this.handleOpen = this.handleOpen.bind(this);
-        this.handleClose = this.handleClose.bind(this);
-        this.onChange = this.onChange.bind(this);
     }
 
-    handleOpen(){
+    handleOpen = ()=>{
         this.setState({
             showdialog: true,
         });
     }
 
-    handleClose(){
+    handleClose = ()=>{
         this.setState({
             showdialog: false,
         });
     }
 
-    onChange(event){
+    onChange = (event)=>{
         this.setState({
             name: event.target.value,
         });
