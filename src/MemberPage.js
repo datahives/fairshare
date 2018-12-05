@@ -25,7 +25,7 @@ class MemberCard extends Component {
                 <H3 style={{marginLeft: "20px", lineHeight: "45px"}}>{this.props.member.name}</H3>
             </div>
             <div className="flexRightHorizontal">
-                <Button icon="edit">Edit</Button>
+                <EditMemberButton member={this.props.member} handleEditMember={this.props.handleEditMember} handleDeleteMember={this.props.handleDeleteMember}/>
             </div>
           </Card>  
         );
@@ -70,13 +70,50 @@ class AddMemberCard extends Component {
     }
 }
 
+class EditMemberButton extends Component {
+    constructor(props){
+        super(props);
+        this.state = {
+            showdialog: false,
+        };
+    }
+
+    handleOpen = ()=>{
+        this.setState({
+            showdialog: true,
+        });
+    }
+
+    handleClose = ()=>{
+        this.setState({
+            showdialog: false,
+        });
+    }
+
+    render(){
+        return(
+            <div>
+                <Button icon="edit" onClick={this.handleOpen}>Edit</Button>
+                <EditMemberDialog 
+                    member={this.props.member} 
+                    showdialog={this.state.showdialog}
+                    handleClose={this.handleClose}
+                    handleEditMember={this.props.handleEditMember}
+                    handleDeleteMember={this.props.handleDeleteMember}/>
+            </div>
+        );
+    }
+
+}
+
 class EditMemberDialog extends Component {
 
     constructor(props){
         super(props);
 
+        const name = (this.props.member)?this.props.member.name:'';
         this.state = {
-            name: '',
+            name: name,
         };
     }
 
@@ -91,13 +128,22 @@ class EditMemberDialog extends Component {
             id: sha256((new Date()).getTime().toString()),
             name: this.state.name,
             avatar: <Avatar label={getInitial(this.state.name)} bgcolor={randomcolor({luminosity: 'light'})} color="black"/>
-        }
+        };
 
-        this.props.handleAddMember(newMember);
+        if(this.props.member){
+            newMember.id = this.props.member.id;
+            this.props.handleEditMember(this.props.member,newMember)
+        }else{
+            this.props.handleAddMember(newMember);
+        }
         this.setState({
             name: '',
         });
         this.props.handleClose();
+    }
+
+    onDelete = ()=>{
+        this.props.handleDeleteMember(this.props.member);
     }
 
     render(){
@@ -106,14 +152,15 @@ class EditMemberDialog extends Component {
                 <Card className="dialog" elevation={Elevation.THREE}>
                     <div className="flexSpanVertical" style={{height: "100%"}}>
                         <div>
-                            <H3>Add Participant</H3>
+                            <H3>{(this.props.member)?"Edit":"Add"} Participant</H3>
                             <Label>
                                 Name
-                                <input className="bp3-input bp3-fill" type="text" placeholder="Name" onChange={this.onChange}/>
+                                <input className="bp3-input bp3-fill" type="text" placeholder="Name" value={this.state.name} onChange={this.onChange}/>
                             </Label>
                         </div>
                         <div className="flexRightHorizontal">
-                            <Button intent={Intent.DANGER} fill onClick={this.props.handleClose}>Cancel</Button>
+                            <Button intent={Intent.NONE} fill onClick={this.props.handleClose}>Cancel</Button>
+                            {(this.props.member)?<Button intent={Intent.DANGER} fill onClick={this.onDelete}>Delete</Button>:null}
                             <Button intent={Intent.PRIMARY} fill onClick={this.onConfirm}>Add</Button>
                         </div>
                     </div>
@@ -128,7 +175,10 @@ class MemberPage extends Component {
     render(){
         const MemberList = this.props.members.map(member=>{
             return (
-                <MemberCard key={member.id} member={member}/>
+                <MemberCard key={member.id} 
+                    member={member}
+                    handleEditMember={this.props.handleEditMember}
+                    handleDeleteMember={this.props.handleDeleteMember}/>
             );
         });
         return(

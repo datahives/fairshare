@@ -21,27 +21,41 @@ class App extends Component {
       members: [],
       items: [],
     };
-
-    this.nextPage = this.nextPage.bind(this);
-    this.previousPage = this.previousPage.bind(this);
-    this.addMember = this.addMember.bind(this);
   }
 
-  nextPage(){
+  nextPage = ()=>{
     this.setState({
       page: this.state.page + 1
     });
   }
 
-  previousPage(){
+  previousPage = ()=>{
     this.setState({
       page: this.state.page - 1
     });
   }
 
-  addMember(member){
+  addMember = (member)=>{
     let members = this.state.members;
     members.push(member);
+    this.setState({
+      members: members,
+    });
+  }
+
+  editMember = (oldmember, newmember)=>{
+    let members = this.state.members;
+    const idx = members.indexOf(oldmember);
+    members.splice(idx,1,newmember);
+    this.setState({
+      members: members,
+    });
+  }
+
+  deleteMember = (member)=>{
+    let members = this.state.members;
+    const idx = members.indexOf(member);
+    members.splice(idx,1);
     this.setState({
       members: members,
     });
@@ -66,7 +80,9 @@ class App extends Component {
           members={this.state.members}
           handleBackPage={this.previousPage} 
           handleNextPage={this.nextPage} 
-          handleAddMember={this.addMember}/>;
+          handleAddMember={this.addMember}
+          handleEditMember={this.editMember}
+          handleDeleteMember={this.deleteMember}/>;
         break;
       case 2:
         renderedPage = <ItemPage 
