@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { Button, 
          Card, 
+         Checkbox,
+         Divider,
          Elevation, 
          H3, 
          H5, 
@@ -55,6 +57,7 @@ class NewItemCard extends Component {
             name: '',
             type: 'item',
             value: 0,
+            paidby: [],
         };     
     }
 
@@ -89,6 +92,12 @@ class NewItemCard extends Component {
         });
     }
 
+    onPaidByChange = (list)=>{
+        this.setState({
+            paidby: list,
+        });
+    }
+
     render(){
         return(
             <Card className="card" interactive={true} elevation={Elevation.TWO}>
@@ -116,7 +125,7 @@ class NewItemCard extends Component {
                                 </Label>
                                 <Label>
                                     Paid by
-                                    <MemberSelect/>
+                                    <MemberSelect members={this.props.members} paidby={this.state.paidby} onPaidByChange={this.onPaidByChange}/>
                                 </Label>
                             </div>
                             <div className="flexRightHorizontal">
@@ -137,7 +146,7 @@ class MemberSelect extends Component {
 
         this.state = {
             showdialog: false,
-            selected: [],
+            selected: this.props.paidby,
         };
     }
 
@@ -153,16 +162,47 @@ class MemberSelect extends Component {
         });
     }
 
+    handleSelect = (event, id)=>{
+        const idx = this.state.selected.indexOf(id);
+        const list = this.state.selected;
+        if(event.target.checked && idx=== -1){
+            list.push(id);
+        }else{
+            list.splice(idx,1);
+        }
+        this.setState({
+            selected: list,
+        });
+        this.props.onPaidByChange(list);
+    }
+
     render(){
+
+        const memberList = this.props.members.map(member=>{
+            return (
+                <div>
+                    <div className="flexLeftHorizontal" style={{alignItems:"baseline"}}>
+                        <Checkbox 
+                            checked={(this.state.selected.indexOf(member.id)!==-1)?true:false}
+                            onChange={(event)=>{this.handleSelect(event,member.id)}}/> 
+                        {member.avatar} 
+                        {member.name}
+                    </div>
+                    <Divider/>
+                </div>
+            );
+        });
+
+        console.log(this.props.paidby)
         return(
             <div>
-                <Button fill onClick={this.handleOpen}>0 participants</Button>
+                <Button fill onClick={this.handleOpen}>{this.props.paidby.length} {(this.props.paidby.length>1)?"participants":"participant"}</Button>
                 <Overlay isOpen={this.state.showdialog}>
                     <Card className="dialog" elevation={Elevation.THREE} style={{height: "80%"}}>
                         <div className="flexSpanVertical" style={{height: "100%"}}>
                             <div>
                                 <H3>Select participants</H3>
-
+                                {memberList}
                             </div>
                             <div className="flexRightHorizontal">
                                 <Button intent={Intent.PRIMARY} fill onClick={this.handleClose}>Back</Button>
@@ -183,7 +223,7 @@ class ItemPage extends Component {
                 <div className="contentpane">
                     <ItemCard/>
                     <ItemCard/>
-                    <NewItemCard/>
+                    <NewItemCard members={this.props.members}/>
                 </div>
                 <BottomBar handleBackPage={this.props.handleBackPage} handleNextPage={this.props.handleNextPage}/>
             </div>

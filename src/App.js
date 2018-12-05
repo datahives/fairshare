@@ -71,7 +71,10 @@ class App extends Component {
           handleAddMember={this.addMember}/>;
         break;
       case 2:
-        renderedPage = <ItemPage handleBackPage={this.previousPage} handleNextPage={this.nextPage}/>;
+        renderedPage = <ItemPage 
+          members={this.state.members}
+          handleBackPage={this.previousPage} 
+          handleNextPage={this.nextPage}/>;
         break;
       case 3:
         renderedPage = <SummaryPage handleBackPage={this.previousPage} handleNextPage={this.nextPage}/>;
