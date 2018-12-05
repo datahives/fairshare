@@ -11,12 +11,6 @@ import SummaryPage from './SummaryPage';
 const randomcolor = require('randomcolor');
 const sha256 = require('js-sha256');
 
-function getInitial(name){
-  let initials = name.match(/\b\w/g) || [];
-  initials = ((initials.shift() || '') + (initials.pop() || '')).toUpperCase();
-  return initials;
-}
-
 class App extends Component {
 
   constructor(props){
@@ -45,21 +39,15 @@ class App extends Component {
     });
   }
 
-  addMember(name){
+  addMember(member){
     let members = this.state.members;
-    const newmember = {
-      id: sha256((new Date()).getTime().toString()),
-      name: name,
-      avatar: <Avatar label={getInitial(name)} bgcolor={randomcolor({luminosity: 'light'})} color="black"/>
-    }
-    members.push(newmember);
+    members.push(member);
     this.setState({
       members: members,
     });
   }
 
   addItem = (item)=>{
-    console.log(item)
     let items = this.state.items;
     items.push(item);
     this.setState({

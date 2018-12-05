@@ -5,6 +5,16 @@ import './App.css';
 
 import AppBar from './AppBar';
 import BottomBar from './BottomBar';
+import Avatar from './Avatar';
+
+const randomcolor = require('randomcolor');
+const sha256 = require('js-sha256');
+
+function getInitial(name){
+    let initials = name.match(/\b\w/g) || [];
+    initials = ((initials.shift() || '') + (initials.pop() || '')).toUpperCase();
+    return initials;
+  }
 
 class MemberCard extends Component {
     render(){
@@ -51,6 +61,20 @@ class NewMemberCard extends Component {
         });
     }
 
+    onConfirm = ()=>{
+        const newMember = {
+            id: sha256((new Date()).getTime().toString()),
+            name: this.state.name,
+            avatar: <Avatar label={getInitial(this.state.name)} bgcolor={randomcolor({luminosity: 'light'})} color="black"/>
+        }
+
+        this.props.handleAddMember(newMember);
+        this.setState({
+            showdialog: false,
+            name: '',
+        });
+    }
+
     render(){
         return(
             <Card className="card" interactive={true} elevation={Elevation.TWO}>
@@ -71,7 +95,7 @@ class NewMemberCard extends Component {
                             </div>
                             <div className="flexRightHorizontal">
                                 <Button intent={Intent.DANGER} fill onClick={this.handleClose}>Cancel</Button>
-                                <Button intent={Intent.PRIMARY} fill onClick={()=>{this.setState({showdialog: false}); this.props.handleAddMember(this.state.name)}}>Add</Button>
+                                <Button intent={Intent.PRIMARY} fill onClick={this.onConfirm}>Add</Button>
                             </div>
                         </div>
                         

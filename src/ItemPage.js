@@ -16,7 +16,6 @@ import './App.css';
 
 import AppBar from './AppBar';
 import BottomBar from './BottomBar';
-import Avatar from './Avatar';
 
 const sha256 = require('js-sha256');
 
