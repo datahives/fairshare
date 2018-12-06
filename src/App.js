@@ -113,7 +113,11 @@ class App extends Component {
           handleDeleteItem={this.deleteItem}/>;
         break;
       case 3:
-        renderedPage = <SummaryPage handleBackPage={this.previousPage} handleNextPage={this.nextPage}/>;
+        renderedPage = <SummaryPage 
+          members={this.state.members}
+          items={this.state.items}
+          handleBackPage={this.previousPage} 
+          handleNextPage={this.nextPage}/>;
         break;
       default:
         renderedPage = <div><strong>Four-oh-Four | 404 </strong></div>;

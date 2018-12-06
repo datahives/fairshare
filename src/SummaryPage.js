@@ -9,17 +9,25 @@ import Avatar from './Avatar';
 
 class TotalSummaryCard extends Component{
     render(){
+        const balance = this.props.pot - this.props.totalItemValue;
+        let color = "black";
+        if(balance>0){
+            color = "#3FA57A";
+        }else if(balance<0){
+            color = "red";
+        }
+
         return(
             <Card className="card" interactive={true} elevation={Elevation.TWO}>
                 <div className="flexTopVertical">
                     <H5>Total</H5>
-                    <H3>2000 THB</H3>
+                    <H3>{this.props.totalItemValue} THB</H3>
                     <Divider/>
                     <H5>Pot</H5>
-                    <H3>1000 THB</H3>
+                    <H3>{this.props.pot} THB</H3>
                     <Divider/>
                     <H5>Balance</H5>
-                    <H3>-1000 THB</H3>
+                    <H3 style={{color:color}}>{balance} THB</H3>
                 </div>
             </Card>
         );
@@ -27,16 +35,43 @@ class TotalSummaryCard extends Component{
 }
 
 class MemberSummaryCard extends Component{
+    constructor(props){
+        super(props);
+
+        this.state = {
+            pot: 0,
+        };
+    }
+
+    computeMemberDebt = ()=>{
+        let totalItemValue=0;
+        this.props.items.forEach(item=>{
+            if(item.paidby.indexOf(this.props.member.id)!==-1){
+                totalItemValue = totalItemValue + (item.value / item.paidby.length);
+            }
+        });
+        return totalItemValue;
+    }
+
     render(){
+        const debt = this.computeMemberDebt();
+        const balance = this.state.pot - debt;
+        let color = "black";
+        if(balance > 0){
+            color = "#3FA57A";
+        }else if(balance < 0){
+            color = "red";
+        }
+
         return(
             <Card className="card" interactive={true} elevation={Elevation.TWO}>
                 <div className="flexLeftHorizontal">
-                    <Avatar label="MN" bgcolor="blue" color="white"/>
+                    {this.props.member.avatar}
                     <div className="flexTopVertical">
-                        <H3 style={{lineHeight: "45px"}}>Member name</H3>
-                        <H5>500 THB</H5>
-                        <p>Paid: 200 THB</p>
-                        <p>Balance: -300 THB</p>
+                        <H3 style={{lineHeight: "45px"}}>{this.props.member.name}</H3>
+                        <H5>{debt} THB</H5>
+                        <p>Paid: {this.state.pot} THB</p>
+                        <p style={{color:color}}>Balance: {balance} THB</p>
                     </div>
                 </div>
                 <div className="flexRightHorizontal">
@@ -49,14 +84,46 @@ class MemberSummaryCard extends Component{
 }
 
 class SummaryPage extends Component {
+    constructor(props){
+        super(props);
+
+        this.state = {
+            pot: 0,
+        };
+    }
+
+    computeTotalPrice = ()=>{
+        let totalItemValue = 0;
+        this.props.items.forEach(item=>{
+            if(item.type==="item"){
+                totalItemValue = totalItemValue + item.value;
+            }
+        });
+
+        this.props.items.forEach(item=>{
+            if(item.type==="surcharge"){
+                totalItemValue = totalItemValue + (totalItemValue*item.value /100);
+            }
+        });
+
+        return totalItemValue;
+    }
+
     render(){
+        const memberList = this.props.members.map(member=>{
+            return(
+                <MemberSummaryCard key={member.id}
+                    member={member}
+                    {...this.props}/>
+            );
+        });
+
         return( 
             <div className="fullview">
                 <AppBar/>
                 <div className="contentpane">
-                    <TotalSummaryCard/>
-                    <MemberSummaryCard/>
-                    <MemberSummaryCard/>
+                    <TotalSummaryCard totalItemValue={this.computeTotalPrice()} pot={this.state.pot}/>
+                    {memberList}
                 </div>
                 <BottomBar handleBackPage={this.props.handleBackPage}/>
             </div>
