@@ -47,7 +47,12 @@ class MemberSummaryCard extends Component{
         let totalItemValue=0;
         this.props.items.forEach(item=>{
             if(item.paidby.indexOf(this.props.member.id)!==-1){
-                totalItemValue = totalItemValue + (item.value / item.paidby.length);
+                if(item.type==="item"){
+                    totalItemValue = totalItemValue + (item.value / item.paidby.length);
+                }
+            }
+            if(item.type==="surcharge"){
+                totalItemValue = totalItemValue + (totalItemValue*item.value /100);
             }
         });
         return totalItemValue;
@@ -205,10 +210,11 @@ class SummaryPage extends Component {
 
         this.props.items.forEach(item=>{
             if(item.type==="surcharge"){
-                totalItemValue = totalItemValue + (totalItemValue*item.value /100);
+                const addon = (totalItemValue*item.value /100);
+                totalItemValue = totalItemValue + addon;
             }
         });
-
+        
         return totalItemValue;
     }
 
