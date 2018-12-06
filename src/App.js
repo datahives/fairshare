@@ -56,8 +56,18 @@ class App extends Component {
     let members = this.state.members;
     const idx = members.indexOf(member);
     members.splice(idx,1);
+
+    let items = this.state.items;
+    items.forEach(item=>{
+      const ididx = item.paidby.indexOf(member.id);
+      if(ididx!==-1){
+        item.paidby.splice(ididx,1);
+      }
+    })
+
     this.setState({
       members: members,
+      items: items,
     });
   }
 
