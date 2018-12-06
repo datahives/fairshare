@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, Card, Divider, Elevation, H3, H5 } from '@blueprintjs/core';
+import { Button, Card, Divider, Elevation, H3, H5, Label, Overlay, NumericInput, Intent } from '@blueprintjs/core';
 import '@blueprintjs/core/lib/css/blueprint.css';
 import './App.css';
 
@@ -53,6 +53,14 @@ class MemberSummaryCard extends Component{
         return totalItemValue;
     }
 
+    updateMemberPot = (value)=>{
+        let pot = this.state.pot;
+        pot = pot + value;
+        this.setState({
+            pot: pot,
+        });
+    }
+
     render(){
         const debt = this.computeMemberDebt();
         const balance = this.state.pot - debt;
@@ -74,12 +82,107 @@ class MemberSummaryCard extends Component{
                         <p style={{color:color}}>Balance: {balance} THB</p>
                     </div>
                 </div>
-                <div className="flexRightHorizontal">
-                    <Button icon="upload" fill>Pay</Button>
-                    <Button icon="download" fill>Change</Button>
-                </div>
+                <PayButtons updatePot={this.updateMemberPot} {...this.props}/>
             </Card>
         )
+    }
+}
+
+class PayButtons extends Component {
+    constructor(props){
+        super(props);
+
+        this.state = {
+            showPayDialog: false,
+            showChangeDialog: false,
+            payValue: 0,
+            changeValue: 0,
+        };
+    }
+
+    openPayDialog = ()=>{
+        this.setState({
+            showPayDialog: true,
+        });
+    }
+
+    closePayDialog = ()=>{
+        this.setState({
+            showPayDialog: false,
+        });
+    }
+
+    onPay = ()=>{
+        this.props.updatePot(this.state.payValue);
+        this.props.updateTotalPot(this.state.payValue);
+        this.setState({
+            payValue: 0,
+            showPayDialog: false,
+        });
+    }
+
+    openChangeDialog = ()=>{
+        this.setState({
+            showChangeDialog: true,
+        });
+    }
+
+    closeChangeDialog = ()=>{
+        this.setState({
+            showChangeDialog: false,
+        });
+    }
+
+    onChange = ()=>{
+        this.props.updatePot(-this.state.changeValue);
+        this.props.updateTotalPot(-this.state.changeValue);
+        this.setState({
+            changeValue: 0,
+            showChangeDialog: false,
+        })
+    }
+
+    render(){
+        return(
+            <div className="flexRightHorizontal">
+                <Button icon="upload" fill onClick={this.openPayDialog}>Pay</Button>
+                <Button icon="download" fill onClick={this.openChangeDialog}>Change</Button>
+                <Overlay isOpen={this.state.showPayDialog}>
+                    <Card className="dialog" elevation={Elevation.THREE}>
+                        <div className="flexSpanVertical" style={{height: "100%"}}>
+                            <div>
+                                <H3>Pay</H3>
+                                <Label>
+                                    {this.props.member.name} is paying
+                                    <NumericInput fill value={this.state.value} value={this.state.payValue} onValueChange={(value)=>this.setState({payValue: value})}/>
+                                </Label>
+                            </div>
+                            <div className="flexRightHorizontal">
+                                <Button intent={Intent.NONE} fill onClick={this.closePayDialog}>Cancel</Button>
+                                <Button intent={Intent.PRIMARY} fill onClick={this.onPay}>Pay</Button>
+                            </div>
+                        </div>
+                    </Card>
+                </Overlay>
+                <Overlay isOpen={this.state.showChangeDialog}>
+                    <Card className="dialog" elevation={Elevation.THREE}>
+                        <div className="flexSpanVertical" style={{height: "100%"}}>
+                            <div>
+                                <H3>Change</H3>
+                                <Label>
+                                    {this.props.member.name} is getting changed of
+                                    <NumericInput fill value={this.state.value} value={this.state.changeValue} onValueChange={(value)=>this.setState({changeValue: value})}/>
+                                </Label>
+                            </div>
+                            <div className="flexRightHorizontal">
+                                <Button intent={Intent.NONE} fill onClick={this.closeChangeDialog}>Cancel</Button>
+                                <Button intent={Intent.PRIMARY} fill onClick={this.onChange}>Pay</Button>
+                            </div>
+                        </div>
+                    </Card>
+                </Overlay>
+            </div>
+        );
     }
 }
 
@@ -109,11 +212,20 @@ class SummaryPage extends Component {
         return totalItemValue;
     }
 
+    updateTotalPot = (value)=>{
+        let pot = this.state.pot;
+        pot = pot + value;
+        this.setState({
+            pot: pot,
+        });
+    }
+
     render(){
         const memberList = this.props.members.map(member=>{
             return(
                 <MemberSummaryCard key={member.id}
                     member={member}
+                    updateTotalPot={this.updateTotalPot}
                     {...this.props}/>
             );
         });
