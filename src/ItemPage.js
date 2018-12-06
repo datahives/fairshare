@@ -218,10 +218,13 @@ class EditItemDialog extends Component {
                                 {(this.state.type==="item")?"Price":"Add-on percentage"}
                                 <NumericInput fill min={0} value={this.state.value} value={this.state.value} onValueChange={this.onPriceChange}/>
                             </Label>
-                            <Label>
-                                Paid by
-                                <MemberSelect members={this.props.members} paidby={this.state.paidby} onPaidByChange={this.onPaidByChange}/>
-                            </Label>
+                            { (this.state.type==="item")?(
+                                <Label>
+                                    Paid by
+                                    <MemberSelect members={this.props.members} paidby={this.state.paidby} onPaidByChange={this.onPaidByChange}/>
+                                </Label>
+                                ):null }
+                            
                         </div>
                         <div className="flexRightHorizontal">
                             <Button intent={Intent.NONE} fill onClick={this.props.handleClose}>Cancel</Button>
