@@ -5,7 +5,10 @@ import './App.css';
 
 import AppBar from './AppBar';
 import BottomBar from './BottomBar';
-import Avatar from './Avatar';
+
+function roundToTwoDecimal(value){
+    return Math.round(value *100) /100;
+}
 
 class TotalSummaryCard extends Component{
     render(){
@@ -21,13 +24,13 @@ class TotalSummaryCard extends Component{
             <Card className="card" interactive={true} elevation={Elevation.TWO}>
                 <div className="flexTopVertical">
                     <H5>Total</H5>
-                    <H3>{this.props.totalItemValue} THB</H3>
+                    <H3>{roundToTwoDecimal(this.props.totalItemValue)} THB</H3>
                     <Divider/>
                     <H5>Pot</H5>
-                    <H3>{this.props.pot} THB</H3>
+                    <H3>{roundToTwoDecimal(this.props.pot)} THB</H3>
                     <Divider/>
                     <H5>Balance</H5>
-                    <H3 style={{color:color}}>{balance} THB</H3>
+                    <H3 style={{color:color}}>{roundToTwoDecimal(balance)} THB</H3>
                 </div>
             </Card>
         );
@@ -82,9 +85,9 @@ class MemberSummaryCard extends Component{
                     {this.props.member.avatar}
                     <div className="flexTopVertical">
                         <H3 style={{lineHeight: "45px"}}>{this.props.member.name}</H3>
-                        <H5>{debt} THB</H5>
-                        <p>Paid: {this.state.pot} THB</p>
-                        <p style={{color:color}}>Balance: {balance} THB</p>
+                        <H5>{roundToTwoDecimal(debt)} THB</H5>
+                        <p>Paid: {roundToTwoDecimal(this.state.pot)} THB</p>
+                        <p style={{color:color}}>Balance: {roundToTwoDecimal(balance)} THB</p>
                     </div>
                 </div>
                 <PayButtons updatePot={this.updateMemberPot} {...this.props}/>
