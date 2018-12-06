@@ -17,7 +17,7 @@ class App extends Component {
     super(props);
 
     this.state = {
-      page: 1,
+      page: 0,
       members: [],
       items: [],
     };
