@@ -42,8 +42,8 @@ class ItemCard extends Component {
             <H3>{this.props.item.name}</H3>
             <H5>{(this.props.item.type==="surcharge")?"Surcharge":"Item"}</H5>
 
-            <p>{this.props.item.value} {(this.props.item.type==="surcharge")?"% = ":"THB"}
-               {(this.props.item.type==="surcharge")?this.props.totalItemValue * this.props.item.value / 100: null}
+            <p>{this.props.item.value} {(this.props.item.type==="surcharge")?"%":"THB"}
+               {/* {(this.props.item.type==="surcharge")?this.props.totalItemValue * this.props.item.value / 100: null} */}
             </p>
 
             <AvatarList avatars={avatarlist}/>
@@ -224,6 +224,11 @@ class EditItemDialog extends Component {
                                     <MemberSelect members={this.props.members} paidby={this.state.paidby} onPaidByChange={this.onPaidByChange}/>
                                 </Label>
                                 ):null }
+                            { (this.state.type==="surcharge")?(
+                                <Label>
+                                    * Surcharge must be added in order 
+                                </Label>
+                            ):null}
                             
                         </div>
                         <div className="flexRightHorizontal">
