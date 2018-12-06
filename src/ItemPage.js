@@ -274,6 +274,16 @@ class MemberSelect extends Component {
         this.props.onPaidByChange(list);
     }
 
+    handleSelectAll = ()=>{
+        const list = this.props.members.map(member=>{
+            return member.id;
+        });
+        this.setState({
+            selected: list,
+        });
+        this.props.onPaidByChange(list);
+    }
+
     render(){
 
         const memberList = this.props.members.map(member=>{
@@ -297,9 +307,10 @@ class MemberSelect extends Component {
                 <Overlay isOpen={this.state.showdialog}>
                     <Card className="dialog" elevation={Elevation.THREE} style={{height: "80%"}}>
                         <div className="flexSpanVertical" style={{height: "100%"}}>
-                            <div>
+                            <div style={{overflowY:"scroll", maxHeight:"90%"}}>
                                 <H3>Select participants</H3>
                                 {memberList}
+                                <Button fill onClick={this.handleSelectAll}>Select all</Button>
                             </div>
                             <div className="flexRightHorizontal">
                                 <Button intent={Intent.PRIMARY} fill onClick={this.handleClose}>Back</Button>
