@@ -241,7 +241,7 @@ class SummaryPage extends Component {
 
         return( 
             <div className="fullview">
-                <AppBar/>
+                <AppBar title="Summary"/>
                 <div className="contentpane">
                     <TotalSummaryCard totalItemValue={this.computeTotalPrice()} pot={this.state.pot}/>
                     {memberList}

@@ -9,7 +9,7 @@ class SplashPage extends Component {
     render(){
         return(
             <div className="fullview">
-                <AppBar/>
+                <AppBar title="Fairshare"/>
                 <div className="centerVertical">
                     <div className="centerHorizontal">
                         <div className="splashTitle">

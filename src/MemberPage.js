@@ -184,7 +184,7 @@ class MemberPage extends Component {
         });
         return(
             <div className="fullview">
-                <AppBar/>
+                <AppBar title="Participants"/>
                 <div className="contentpane">
                     {MemberList}
                     <AddMemberCard {...this.props}/>

@@ -6,7 +6,7 @@ class AppBar extends Component{
     render(){
         return(
             <div className="AppBar">
-                <h1>Fairshare</h1>
+                <h1>{this.props.title}</h1>
             </div>
         );
     }

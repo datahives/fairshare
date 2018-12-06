@@ -343,7 +343,7 @@ class ItemPage extends Component {
 
         return(
             <div className="fullview">
-                <AppBar/>
+                <AppBar title="Items"/>
                 <div className="contentpane">
                     {itemList}
                     <AddItemCard {...this.props}/>
