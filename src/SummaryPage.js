@@ -162,7 +162,7 @@ class PayButtons extends Component {
                                 <H3>Pay</H3>
                                 <Label>
                                     {this.props.member.name} is paying
-                                    <NumericInput fill value={this.state.value} value={this.state.payValue} onValueChange={(value)=>this.setState({payValue: value})}/>
+                                    <NumericInput fill value={this.state.payValue} onValueChange={(value)=>this.setState({payValue: value})}/>
                                 </Label>
                             </div>
                             <div className="flexRightHorizontal">
@@ -179,7 +179,7 @@ class PayButtons extends Component {
                                 <H3>Change</H3>
                                 <Label>
                                     {this.props.member.name} is getting changed of
-                                    <NumericInput fill value={this.state.value} value={this.state.changeValue} onValueChange={(value)=>this.setState({changeValue: value})}/>
+                                    <NumericInput fill value={this.state.changeValue} onValueChange={(value)=>this.setState({changeValue: value})}/>
                                 </Label>
                             </div>
                             <div className="flexRightHorizontal">

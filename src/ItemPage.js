@@ -34,6 +34,8 @@ class ItemCard extends Component {
         const avatarlist = this.props.members.map(member=>{
             if (this.props.item.paidby.indexOf(member.id)!==-1){
                 return member.avatar;
+            }else{
+                return null;
             }
         });
 
@@ -216,7 +218,7 @@ class EditItemDialog extends Component {
                             </Label>
                             <Label>
                                 {(this.state.type==="item")?"Price":"Add-on percentage"}
-                                <NumericInput fill min={0} value={this.state.value} value={this.state.value} onValueChange={this.onPriceChange}/>
+                                <NumericInput fill min={0} value={this.state.value} onValueChange={this.onPriceChange}/>
                             </Label>
                             { (this.state.type==="item")?(
                                 <Label>

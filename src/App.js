@@ -2,14 +2,10 @@ import React, { Component } from 'react';
 import './App.css';
 // import { Button } from '@blueprintjs/core';
 
-import Avatar from './Avatar';
 import SplashPage from './SplashPage';
 import MemberPage from './MemberPage';
 import ItemPage from './ItemPage';
 import SummaryPage from './SummaryPage';
-
-const randomcolor = require('randomcolor');
-const sha256 = require('js-sha256');
 
 class App extends Component {
 
